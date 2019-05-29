@@ -20,7 +20,7 @@ public class pokerMain {
             if (userIn.charAt(0) == 'y' || userIn.charAt(0) == 'Y') {
                 System.out.println("Shuffling cards...");
                 try {
-                    TimeUnit.SECONDS.sleep(1);
+                    TimeUnit.SECONDS.sleep(2);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -318,6 +318,7 @@ public class pokerMain {
             String userIn = scnr.next().trim().toLowerCase();
             int nextCard = genCard(cardDeck);
             String nextCardString = cardDeck.get(nextCard);
+            System.out.println(nextCardString);
             removeCard(cardDeck, nextCard);
 
             if ((userIn.contains("clubs") && nextCardString.contains("clubs"))) {
