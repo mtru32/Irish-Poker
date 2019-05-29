@@ -7,7 +7,7 @@ public class pokerTests {
     public static void main(String[] args){
         //testCardRemover();
         //testCardVal();
-        testReshuffle();
+        //testReshuffle();
     }
 
     public static void testCardRemover() {
