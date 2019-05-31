@@ -8,6 +8,7 @@ public class pokerTests {
         //testCardRemover();
         //testCardVal();
         //testReshuffle();
+        testSuitGuess();
     }
 
     public static void testCardRemover() {
@@ -33,4 +34,9 @@ public class pokerTests {
             System.out.println("You won");
         }
     }
+    public static void testSuitGuess() {
+        ArrayList <String> cardDeck = pokerMain.generateDeck();
+        pokerMain.suitGuess(cardDeck);
+    }
+    
 }

@@ -321,19 +321,19 @@ public class pokerMain {
             System.out.println(nextCardString);
             removeCard(cardDeck, nextCard);
 
-            if ((userIn.contains("clubs") && nextCardString.contains("clubs"))) {
+            if (((userIn.contains("clubs")) && (nextCardString.contains("Clubs")))) {
                 System.out.println("Congratulations, you win!");
                 toggle = 1;
             }
-            else if ((userIn.contains("diamonds") && nextCardString.contains("diamonds"))) {
+            else if (((userIn.contains("diamonds")) && (nextCardString.contains("Diamonds")))) {
                 System.out.println("Congratulations, you win!");
                 toggle = 1;
             }
-            else if ((userIn.contains("hearts") && nextCardString.contains("hearts"))) {
+            else if (((userIn.contains("hearts")) && (nextCardString.contains("Hearts")))) {
                 System.out.println("Congratulations, you win!");
                 toggle = 1;
             }
-            else if ((userIn.contains("spades") && nextCardString.contains("spades"))) {
+            else if (((userIn.contains("spades")) && (nextCardString.contains("Spades")))) {
                 System.out.println("Congratulations, you win!");
                 toggle = 1;
             }
