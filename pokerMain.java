@@ -25,15 +25,10 @@ public class pokerMain {
     System.out.println("Press h for help");
     // do/while loop that repeats prompts until user wins or presses q
     do {
-      userIn = scnr.next().trim();
-      if (userIn.charAt(0) == 'y' || userIn.charAt(0) == 'Y') {
+      userIn = scnr.next().trim().toLowerCase();
+      if (userIn.charAt(0) == 'y') {
         System.out.println("Shuffling cards...");
-        try {
-          TimeUnit.SECONDS.sleep(2); // shuffling time delay for effect
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-
+        shuffleCards();
         do {
           win = playGame(generateDeck());
         } while (win == 0);
@@ -67,6 +62,18 @@ public class pokerMain {
   }
 
   /**
+   * Helper method for try catch block used for delay
+   * timer to shuffle cards for ~effect~
+   */
+  public static void shuffleCards() {
+    try {
+      TimeUnit.SECONDS.sleep(2); // shuffling time delay for effect
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
    * This method is used to loop the game outside of the main method
    * 
    * @param cardDeck the continuous (sorted) deck of cards the user is playing
@@ -77,13 +84,9 @@ public class pokerMain {
     int complete = 0;
 
     while (complete == 0) {
-      if (cardDeck.size() == 0) { // makes sure there are cards in the deck
-        System.out.println("Re-Shuffling...");
-        try {
-          TimeUnit.SECONDS.sleep(3); // re-shuffling time delay added for effect
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+      if (cardDeck.size() == 0) { // checks if there are cards in the deck
+        System.out.println("Reshuffling...");
+        shuffleCards();
         cardDeck = generateDeck(); // creates a new full deck to be played with if empty
       }
       complete = colorGuess(cardDeck); // starts the game with the color guess
@@ -131,12 +134,8 @@ public class pokerMain {
 
     while (toggle == 0) { // runs the color guess until the user wins or quits
       if (cardDeck.size() == 0) {
-        System.out.println("Re-Shuffling...");
-        try {
-          TimeUnit.SECONDS.sleep(3); // re-shuffling time delay added for effect
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+        System.out.println("Reshuffling...");
+        shuffleCards();
         cardDeck = generateDeck(); // creates a new full deck to be played with if empty
       }
       System.out.println("\nRed or Black?"); // Prompts the user
@@ -250,12 +249,8 @@ public class pokerMain {
 
     while (toggle == 0) {
       if (cardDeck.size() == 0) { // creates a new deck if the current one is empty
-        System.out.println("\nReshuffling...");
-        try {
-          TimeUnit.SECONDS.sleep(3); // re-shuffling time delay added for effect
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+        System.out.println("Reshuffling...");
+        shuffleCards();
         cardDeck = generateDeck();
       }
       System.out.println("\nHigher, Lower, or Same? (Aces low)"); // user prompt
@@ -299,7 +294,7 @@ public class pokerMain {
   }
 
   /**
-   *    // FIXME: Add support for same card value
+   * // FIXME: Add support for same card value
    * 
    * This method is used for the third challenge of the game to see if the next
    * card is in between the numeric values of the previous two, or if it is
@@ -323,11 +318,7 @@ public class pokerMain {
     while (toggle == 0) {
       if (cardDeck.size() == 0) {
         System.out.println("Reshuffling...");
-        try {
-          TimeUnit.SECONDS.sleep(3); // re-shuffling time delay added for effect
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+        shuffleCards();
         cardDeck = generateDeck();
       }
 
@@ -368,11 +359,11 @@ public class pokerMain {
   }
 
   /**
-   * This method is used for the last challenge of the game which is guessing 
-   * the suit of a drawn card
+   * This method is used for the last challenge of the game which is guessing the
+   * suit of a drawn card
    * 
-   * @param cardDeck the continuous (sorted) deck of cards the user is
-   *                 playing with
+   * @param cardDeck the continuous (sorted) deck of cards the user is playing
+   *                 with
    */
   public static void suitGuess(ArrayList<String> cardDeck) {
     Scanner scnr = new Scanner(System.in);
@@ -381,11 +372,7 @@ public class pokerMain {
     while (toggle == 0) {
       if (cardDeck.size() == 0) { // makes sure there are cards in the deck
         System.out.println("Reshuffling...");
-        try {
-          TimeUnit.SECONDS.sleep(3); // re-shuffling time delay added for effect
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+        shuffleCards();
         cardDeck = generateDeck();
       }
 
@@ -399,8 +386,7 @@ public class pokerMain {
       if ((nextCardString.toLowerCase().contains(userIn))) {
         System.out.println("Congratulations, you win!");
         break;
-      }
-      else {
+      } else {
         System.out.println("So close! Back to the beginning.");
         toggle = -1; // signal for restart
         break;
