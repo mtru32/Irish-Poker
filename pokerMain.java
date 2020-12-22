@@ -42,15 +42,13 @@ public class pokerMain {
         }
 
       } else if (userIn.charAt(0) == 'h' || userIn.charAt(0) == 'H') {
-        System.out
-            .println("===========Rules===========\nThis is a guessing game is played with one deck "
-                + "of cards and four stages\n1. Guess the color of the card (red or black)\n"
-                + "2. Guess if the next card is higher, lower, or the same than the card that was "
-                + "just correctly guessed for color\n3. Guess if the next card is in between or"
-                + "outside the value of the two previous cards\n4. Guess the suit of a drawn"
-                + " card\nType exactly what the prompt asks for\nAnytime you are incorrect or user "
-                + "input is bad the game will restart back at colors.\n\nGood Luck! - Press y" 
-                + " to play");
+        System.out.println("===========Rules===========\nThis is a guessing game is played with one deck "
+            + "of cards and four stages\n1. Guess the color of the card (red or black)\n"
+            + "2. Guess if the next card is higher, lower, or the same than the card that was "
+            + "just correctly guessed for color\n3. Guess if the next card is in between or"
+            + "outside the value of the two previous cards\n4. Guess the suit of a drawn"
+            + " card\nType exactly what the prompt asks for\nAnytime you are incorrect or user "
+            + "input is bad the game will restart back at colors.\n\nGood Luck! - Press y" + " to play");
         continue;
       } else if (userIn.charAt(0) == 'q' || userIn.charAt(0) == 'Q') { // quits if the user enters q
         break;
@@ -69,11 +67,11 @@ public class pokerMain {
     scnr.close();
   }
 
-
   /**
    * This method is used to loop the game outside of the main method
    * 
-   * @param cardDeck the continuous (sorted) deck of cards the user is playing with
+   * @param cardDeck the continuous (sorted) deck of cards the user is playing
+   *                 with
    * @return an integer that tells the main method whether the player won or not
    */
   public static int playGame(ArrayList<String> cardDeck) {
@@ -94,11 +92,11 @@ public class pokerMain {
     return complete;
   }
 
-
   /**
    * Card remover method that removes the card at a desired index
    * 
-   * @param cardDeck the continuous (sorted) deck of cards the user is playing with
+   * @param cardDeck the continuous (sorted) deck of cards the user is playing
+   *                 with
    * @param cardNum  the index of the card to be removed
    * @return the deck of cards minus the one that was removed
    */
@@ -107,11 +105,11 @@ public class pokerMain {
     return cardDeck;
   }
 
-
   /**
    * Card generator method that randomly selects a card from the users sorted deck
    * 
-   * @param cardDeck the continuous (sorted) deck of cards the user is playing with
+   * @param cardDeck the continuous (sorted) deck of cards the user is playing
+   *                 with
    * @return a random card from the card deck
    */
   public static int genCard(ArrayList<String> cardDeck) {
@@ -119,11 +117,12 @@ public class pokerMain {
     return cardNum;
   }
 
-
   /**
-   * colorGuess method uses user input to see if the correct color is guessed on a random card
+   * colorGuess method uses user input to see if the correct color is guessed on a
+   * random card
    * 
-   * @param cardDeck the continuous (sorted) deck of cards the user is playing with
+   * @param cardDeck the continuous (sorted) deck of cards the user is playing
+   *                 with
    * @return 1 if the user wins, 0 otherwise
    */
   public static int colorGuess(ArrayList<String> cardDeck) {
@@ -190,7 +189,6 @@ public class pokerMain {
     return toggle;
   }
 
-
   /**
    * Helper method used to determine the numerical value of a selected card
    * 
@@ -224,9 +222,8 @@ public class pokerMain {
    * @return the sorted deck
    */
   public static ArrayList<String> generateDeck() {
-    String[] Suits = {"Hearts", "Clubs", "Spades", "Diamonds"};
-    String[] Values =
-        {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+    String[] Suits = { "Hearts", "Clubs", "Spades", "Diamonds" };
+    String[] Values = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
     int suitsLength = Suits.length;
     int valuesLength = Values.length;
     ArrayList<String> deck = new ArrayList<String>();
@@ -241,10 +238,12 @@ public class pokerMain {
   }
 
   /**
-   * This method is used for the second part of the game where the user guesses whether or not the
-   * next card is higher, lower, or the same than their previous
+   * This method is used for the second part of the game where the user guesses
+   * whether or not the next card is higher, lower, or the same than their
+   * previous
    * 
-   * @param cardDeck the continuous (sorted) deck of cards the user is playing with
+   * @param cardDeck the continuous (sorted) deck of cards the user is playing
+   *                 with
    * @param cardVal  numeric value of the previous card
    */
   public static void highOrLow(ArrayList<String> cardDeck, int cardVal) {
@@ -305,10 +304,14 @@ public class pokerMain {
   }
 
   /**
-   * This method is used for the third challenge of the game to see if the next card is in between
-   * the numeric values of the previous two, or if it is outside
+   *    // FIXME: Add support for same card value
    * 
-   * @param cardDeck      cardDeck the continuous (sorted) deck of cards the user is playing with
+   * This method is used for the third challenge of the game to see if the next
+   * card is in between the numeric values of the previous two, or if it is
+   * outside
+   * 
+   * @param cardDeck      cardDeck the continuous (sorted) deck of cards the user
+   *                      is playing with
    * @param secondCardVal the int value of the second card drawn
    * @param firstCardVal  the int value of the first card drawn
    */
@@ -344,18 +347,16 @@ public class pokerMain {
       System.out.println(nextCardString); // print the next card
       cardDeck = removeCard(cardDeck, nextCard); // removes the card from the deck
 
-
       if (userIn.contains("in") && (nextCardVal < secondCardVal) && (nextCardVal > firstCardVal)) {
         System.out.println("Couldn't have done it better myself");
         toggle = 1; // if the user guesses correctly toggle signals 1
-      } else if (userIn.contains("out")
-          && ((nextCardVal > secondCardVal) || (nextCardVal < firstCardVal))) {
+      } else if (userIn.contains("out") && ((nextCardVal > secondCardVal) || (nextCardVal < firstCardVal))) {
         System.out.println("You know it");
         toggle = 1; // if the user guesses correctly toggle signals 1
-      } 
+      }
       // if the next card value is the same as either of the previous cards, restart
       else if ((nextCardVal == secondCardVal) || (nextCardVal == firstCardVal)) {
-        System.out.println("That's super unlucky...");
+        System.out.println("Super unlucky...");
         toggle = -1; // if the user guesses incorrectly toggle signals -1
         break;
       } else {
@@ -366,17 +367,18 @@ public class pokerMain {
     }
     if (toggle == 1) {
       suitGuess(cardDeck); // goes to the final part of the game
-    } else if (toggle == -1) {
+    } else {
       playGame(cardDeck); // starts the game over
     }
     scnr.close();
   }
 
   /**
-   * This method is used for the last challenge of the game which is guessing the suit of a drawn
-   * card
+   * This method is used for the last challenge of the game which is guessing 
+   * the suit of a drawn card
    * 
-   * @param cardDeck the continuous (sorted) deck of cards the user is playing with
+   * @param cardDeck the continuous (sorted) deck of cards the user is
+   *                 playing with
    */
   public static void suitGuess(ArrayList<String> cardDeck) {
     Scanner scnr = new Scanner(System.in);
@@ -393,27 +395,19 @@ public class pokerMain {
         cardDeck = generateDeck();
       }
 
-      System.out.println(" "); // Added for output spacing
-      System.out.println("What Suit? (Clubs, Diamonds, Hearts, Spades)"); // user prompt
-      String userIn = scnr.next().trim().toLowerCase();
-      // retrieves the next card and saves its name
       int nextCard = genCard(cardDeck);
       String nextCardString = cardDeck.get(nextCard);
-      System.out.println(nextCardString); // prints the card
+      System.out.println("\nWhat Suit? (Clubs, Diamonds, Hearts, Spades)"); // user prompt
+      String userIn = scnr.next().trim().toLowerCase();
+      System.out.println(nextCardString); // prints the card after guess
       removeCard(cardDeck, nextCard); // removes the card from the deck
 
-      // Congratulates the user on winning if guessed correctly
-      if (((userIn.contains("clubs")) && (nextCardString.contains("Clubs")))) {
+      if ((nextCardString.toLowerCase().contains(userIn))) {
         System.out.println("Congratulations, you win!");
-      } else if (((userIn.contains("diamonds")) && (nextCardString.contains("Diamonds")))) {
-        System.out.println("Congratulations, you win!");
-      } else if (((userIn.contains("hearts")) && (nextCardString.contains("Hearts")))) {
-        System.out.println("Congratulations, you win!");
-      } else if (((userIn.contains("spades")) && (nextCardString.contains("Spades")))) {
-        System.out.println("Congratulations, you win!");
-      } else {
-        // If the user loses, roast my friend Noah because he always loses this part
-        System.out.println("Way to pull a Noah");
+        break;
+      }
+      else {
+        System.out.println("So close! Back to the beginning.");
         toggle = -1; // signal for restart
         break;
       }
@@ -423,5 +417,4 @@ public class pokerMain {
     }
     scnr.close();
   }
-
 }
