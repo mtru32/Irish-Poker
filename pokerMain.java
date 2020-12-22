@@ -46,9 +46,9 @@ public class pokerMain {
             + "of cards and four stages\n1. Guess the color of the card (red or black)\n"
             + "2. Guess if the next card is higher, lower, or the same than the card that was "
             + "just correctly guessed for color\n3. Guess if the next card is in between or"
-            + "outside the value of the two previous cards\n4. Guess the suit of a drawn"
+            + " outside the value of the two previous cards\n4. Guess the suit of a drawn"
             + " card\nType exactly what the prompt asks for\nAnytime you are incorrect or user "
-            + "input is bad the game will restart back at colors.\n\nGood Luck! - Press y" + " to play");
+            + "input is bad the game will restart back at colors.\n\nGood Luck! - Press y to play or q to quit");
         continue;
       } else if (userIn.charAt(0) == 'q' || userIn.charAt(0) == 'Q') { // quits if the user enters q
         break;
@@ -61,8 +61,7 @@ public class pokerMain {
     // complete will change to 1 if the user wins which will exit the loop
     while (userIn.charAt(0) != 'q' && complete == 0);
     {
-      System.out.println(" "); // Added in for output spacing
-      System.out.println("Thanks for playing!");
+      System.out.println("\nThanks for playing!");
     }
     scnr.close();
   }
@@ -140,8 +139,7 @@ public class pokerMain {
         }
         cardDeck = generateDeck(); // creates a new full deck to be played with if empty
       }
-      System.out.println(" "); // Added for output spacing
-      System.out.println("Red or Black?"); // Prompts the user
+      System.out.println("\nRed or Black?"); // Prompts the user
       String color = scnr.next().trim().toLowerCase();
       int cardNum = genCard(cardDeck); // randomly selects a card from user deck
       String drawnCard = cardDeck.get(cardNum); // gets the name of the card
@@ -163,8 +161,7 @@ public class pokerMain {
         cardVal = cardVal(drawnCard); // saves the numerical value of the card
         cardDeck = removeCard(cardDeck, cardNum); // removes the card that was correctly guessed
         // prints the card and praises user
-        System.out.println(drawnCard);
-        System.out.println("Good Work");
+        System.out.println(drawnCard + "\n Good Work");
         highOrLow(cardDeck, cardVal); // goes to the next part of the game with the user deck and
                                       // the previous card value
         toggle = 1; // signal if user won
@@ -248,13 +245,12 @@ public class pokerMain {
    */
   public static void highOrLow(ArrayList<String> cardDeck, int cardVal) {
     Scanner scnr = new Scanner(System.in);
-    System.out.println(" "); // Added in for output spacing
     int toggle = 0; // 1 for correct -1 for incorrect
     int nextCardVal = 0;
 
     while (toggle == 0) {
       if (cardDeck.size() == 0) { // creates a new deck if the current one is empty
-        System.out.println("Reshuffling...");
+        System.out.println("\nReshuffling...");
         try {
           TimeUnit.SECONDS.sleep(3); // re-shuffling time delay added for effect
         } catch (InterruptedException e) {
@@ -262,7 +258,7 @@ public class pokerMain {
         }
         cardDeck = generateDeck();
       }
-      System.out.println("Higher, Lower, or Same?"); // user prompt
+      System.out.println("\nHigher, Lower, or Same? (Aces low)"); // user prompt
       String guess = scnr.next().trim().toLowerCase();
       int nextCard = genCard(cardDeck); // randomly selects a card from user deck
       String nextCardString = cardDeck.get(nextCard); // gets the name of the card
@@ -288,8 +284,7 @@ public class pokerMain {
         if (nextCardVal == cardVal) {
           System.out.println("You hate to see it");
         }
-        System.out.println(" "); // Added for output spacing
-        System.out.println("Back to colors :/");
+        System.out.println("\nBack to colors :/");
         toggle = -1;
         break;
       }
@@ -336,8 +331,7 @@ public class pokerMain {
         cardDeck = generateDeck();
       }
 
-      System.out.println(" "); // Added for output spacing
-      System.out.println("In or Out?"); // User prompt
+      System.out.println("\nIn or Out?"); // User prompt
 
       String userIn = scnr.next().trim().toLowerCase();
       // retrieves the next card and saves its integer value
