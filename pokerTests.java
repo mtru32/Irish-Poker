@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class pokerTests {
   public static void main(String[] args) {
-    System.out.println("testCardRemover(): " + testCardRemover());
-    System.out.println("testCardVal(): " + testCardVal());
-    // testReshuffle();
+    // System.out.println("testCardRemover(): " + testCardRemover());
+    // System.out.println("testCardVal(): " + testCardVal());
+    testReshuffle();
     // testSuitGuess();
   }
 
@@ -41,7 +41,7 @@ public class pokerTests {
 
   public static void testReshuffle() {
     int win = 0;
-    ArrayList<String> cardDeck = pokerMain.generateDeck();
+    ArrayList<String> cardDeck = new ArrayList<String>();
     do {
       win = pokerMain.playGame(cardDeck);
     } while (win == 0);
