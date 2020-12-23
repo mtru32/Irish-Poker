@@ -36,16 +36,18 @@ public class pokerMain {
           complete = 1;
         }
 
-      } else if (userIn.charAt(0) == 'h' || userIn.charAt(0) == 'H') {
-        System.out.println("===========Rules===========\nThis is a guessing game is played with one deck "
-            + "of cards and four stages\n1. Guess the color of the card (red or black)\n"
-            + "2. Guess if the next card is higher, lower, or the same than the card that was "
-            + "just correctly guessed for color\n3. Guess if the next card is in between or"
+      } else if (userIn.charAt(0) == 'h') {
+        System.out.println("===========Rules===========\nThis is a guessing game"
+            + " that is played with one deck of cards and four stages\n1. Guess "
+            + "the color of the card (red or black)\n2. Guess if the next card "
+            + "is higher, lower, or the same compared to the card that was just "
+            + "correctly guessed for color\n3. Guess if the next card is in between or"
             + " outside the value of the two previous cards\n4. Guess the suit of a drawn"
             + " card\nType exactly what the prompt asks for\nAnytime you are incorrect or user "
-            + "input is bad the game will restart back at colors.\n\nGood Luck! - Press y to play or q to quit");
+            + "input is bad the game will restart back at colors.\n\nGood Luck! "
+            + "- Press y to play or q to quit");
         continue;
-      } else if (userIn.charAt(0) == 'q' || userIn.charAt(0) == 'Q') { // quits if the user enters q
+      } else if (userIn.charAt(0) == 'q') { // quits if the user enters q
         break;
       } else { // re-prompt the user if 'n' or incorrect input is entered
         System.out.println("Press y to play, q to quit, and h for instructions");
@@ -62,8 +64,8 @@ public class pokerMain {
   }
 
   /**
-   * Helper method for try catch block used for delay
-   * timer to shuffle cards for ~effect~
+   * Helper method for try catch block used for delay timer to shuffle cards for
+   * ~effect~
    */
   public static void shuffleCards() {
     try {
@@ -87,7 +89,7 @@ public class pokerMain {
       if (cardDeck.size() == 0) { // checks if there are cards in the deck
         System.out.println("Reshuffling...");
         shuffleCards();
-        cardDeck = generateDeck(); // creates a new full deck to be played with if empty
+        cardDeck = generateDeck(); // creates a new full deck
       }
       complete = colorGuess(cardDeck); // starts the game with the color guess
     }
@@ -95,7 +97,7 @@ public class pokerMain {
   }
 
   /**
-   * Card remover method that removes the card at a desired index
+   * Method used to remove a card at a desired index
    * 
    * @param cardDeck the continuous (sorted) deck of cards the user is playing
    *                 with
@@ -120,8 +122,8 @@ public class pokerMain {
   }
 
   /**
-   * colorGuess method uses user input to see if the correct color is guessed on a
-   * random card
+   * colorGuess method uses user input to see if the correct color is guessed 
+   * on a random card
    * 
    * @param cardDeck the continuous (sorted) deck of cards the user is playing
    *                 with
@@ -136,7 +138,7 @@ public class pokerMain {
       if (cardDeck.size() == 0) {
         System.out.println("Reshuffling...");
         shuffleCards();
-        cardDeck = generateDeck(); // creates a new full deck to be played with if empty
+        cardDeck = generateDeck(); // creates a new full deck
       }
       System.out.println("\nRed or Black?"); // Prompts the user
       String color = scnr.next().trim().toLowerCase();
@@ -144,10 +146,11 @@ public class pokerMain {
       String drawnCard = cardDeck.get(cardNum); // gets the name of the card
 
       // if user guesses correctly when it is red
-      if ((color.equals("red") && drawnCard.contains("Hearts"))
-          || ((color.equals("red") && drawnCard.contains("Diamonds")))) {
+      if ((color.equals("red") && 
+        (drawnCard.contains("Hearts") || drawnCard.contains("Diamonds")))) {
         cardVal = cardVal(drawnCard); // saves the numerical value of the card
-        cardDeck = removeCard(cardDeck, cardNum); // removes the card that was correctly guessed
+        // removes the card that was correctly guessed
+        cardDeck = removeCard(cardDeck, cardNum);
         // prints the card and praises user
         System.out.println(drawnCard);
         System.out.println("Good Work");
@@ -155,28 +158,28 @@ public class pokerMain {
         toggle = 1; // signal if user won
       }
       // if user guesses correctly when it is black
-      else if ((color.equals("black") && drawnCard.contains("Spades"))
-          || (color.equals("black") && drawnCard.contains("Clubs"))) {
+      else if ((color.equals("black") && 
+        (drawnCard.contains("Spades") || drawnCard.contains("Clubs")))) {
+
         cardVal = cardVal(drawnCard); // saves the numerical value of the card
-        cardDeck = removeCard(cardDeck, cardNum); // removes the card that was correctly guessed
+        // removes the card that was correctly guessed
+        cardDeck = removeCard(cardDeck, cardNum);
         // prints the card and praises user
-        System.out.println(drawnCard + "\n Good Work");
-        highOrLow(cardDeck, cardVal); // goes to the next part of the game with the user deck and
-                                      // the previous card value
+        System.out.println(drawnCard + "\nGood Work");
+        // proceed to the next part of the game
+        highOrLow(cardDeck, cardVal); 
         toggle = 1; // signal if user won
       }
       // if user is incorrect
       else {
         if (color.equals("black")) {
-          cardDeck = removeCard(cardDeck, cardNum); // removes the incorrectly guessed card
+          // removes the incorrectly guessed card
+          cardDeck = removeCard(cardDeck, cardNum);
           // prints the card and tells the user they are wrong
-          System.out.println(drawnCard);
-          System.out.println("Incorrect, the card is red.");
-        } else if (color.equals("red")) {
-          cardDeck = removeCard(cardDeck, cardNum); // removes the incorrectly guessed card
-          // prints the card and tells the user they are wrong
-          System.out.println(drawnCard);
-          System.out.println("Incorrect, the card is black.");
+          System.out.println(drawnCard + "\nIncorrect, the card is red.");
+        } else {
+          cardDeck = removeCard(cardDeck, cardNum);
+          System.out.println(drawnCard + "\nIncorrect, the card is black.");
         }
       }
     }
@@ -219,7 +222,8 @@ public class pokerMain {
    */
   public static ArrayList<String> generateDeck() {
     String[] Suits = { "Hearts", "Clubs", "Spades", "Diamonds" };
-    String[] Values = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
+    String[] Values = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+      "Jack", "Queen", "King" };
     int suitsLength = Suits.length;
     int valuesLength = Values.length;
     ArrayList<String> deck = new ArrayList<String>();
@@ -285,8 +289,8 @@ public class pokerMain {
       }
     }
     if (toggle == 1) {
-      inOrOut(cardDeck, nextCardVal, cardVal); // if the user guessed correctly the next challenge
-                                               // is played
+      // advances the game
+      inOrOut(cardDeck, nextCardVal, cardVal);
     } else if (toggle == -1) {
       playGame(cardDeck); // if incorrect the game is restarted
     }
@@ -294,7 +298,6 @@ public class pokerMain {
   }
 
   /**
-   * // FIXME: Add support for same card value
    * 
    * This method is used for the third challenge of the game to see if the next
    * card is in between the numeric values of the previous two, or if it is
@@ -309,7 +312,9 @@ public class pokerMain {
     Scanner scnr = new Scanner(System.in);
     int toggle = 0;
 
-    if (firstCardVal > secondCardVal) { // Makes the secondCardVal always greater than cardVal
+    // Makes the secondCardVal always greater than cardVal
+    // for easier comparison
+    if (firstCardVal > secondCardVal) {
       int temp = secondCardVal;
       secondCardVal = firstCardVal;
       firstCardVal = temp;
@@ -335,18 +340,19 @@ public class pokerMain {
       if (userIn.contains("in") && (nextCardVal < secondCardVal) && (nextCardVal > firstCardVal)) {
         System.out.println("Couldn't have done it better myself");
         toggle = 1; // if the user guesses correctly toggle signals 1
-      } else if (userIn.contains("out") && ((nextCardVal > secondCardVal) || (nextCardVal < firstCardVal))) {
+      } else if (userIn.contains("out") && 
+          ((nextCardVal > secondCardVal) || (nextCardVal < firstCardVal))) {
         System.out.println("You know it");
         toggle = 1; // if the user guesses correctly toggle signals 1
       }
       // if the next card value is the same as either of the previous cards, restart
       else if ((nextCardVal == secondCardVal) || (nextCardVal == firstCardVal)) {
         System.out.println("Super unlucky...");
-        toggle = -1; // if the user guesses incorrectly toggle signals -1
+        toggle = -1; // indicates user was incorrect
         break;
       } else {
         System.out.println("You were so close!");
-        toggle = -1; // if the user guesses incorrectly toggle signals -1
+        toggle = -1;
         break;
       }
     }
@@ -378,7 +384,7 @@ public class pokerMain {
 
       int nextCard = genCard(cardDeck);
       String nextCardString = cardDeck.get(nextCard);
-      System.out.println("\nWhat Suit? (Clubs, Diamonds, Hearts, Spades)"); // user prompt
+      System.out.println("\nWhat Suit? (Clubs, Diamonds, Hearts, Spades)");
       String userIn = scnr.next().trim().toLowerCase();
       System.out.println(nextCardString); // prints the card after guess
       removeCard(cardDeck, nextCard); // removes the card from the deck
