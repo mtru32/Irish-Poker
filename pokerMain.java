@@ -7,16 +7,17 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 
-/**
+/** 
  * 
  * @author Mark Truttmann
  * 
- *         Main method used to initialize and finish the card game
  */
 public class pokerMain {
+  /**
+   * Main Method used to initialize and finish the game
+   */
   public static void main(String args[]) {
     int win = 0;
-    int complete = 0;
     Scanner scnr = new Scanner(System.in);
     String userIn;
 
@@ -29,11 +30,8 @@ public class pokerMain {
       if (userIn.charAt(0) == 'y') {
         System.out.println("Shuffling cards...");
         shuffleCards();
-        do {
+        while (win == 0) {
           win = playGame(generateDeck());
-        } while (win == 0);
-        {
-          complete = 1;
         }
 
       } else if (userIn.charAt(0) == 'h') {
@@ -56,7 +54,7 @@ public class pokerMain {
 
     }
     // complete will change to 1 if the user wins which will exit the loop
-    while (userIn.charAt(0) != 'q' && complete == 0);
+    while (userIn.charAt(0) != 'q' && win == 0);
     {
       System.out.println("\nThanks for playing!");
     }
