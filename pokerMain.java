@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * 
  */
 public class pokerMain {
+  static ArrayList<String> cardDeck = new ArrayList<String>();
   /**
    * Main Method used to initialize and finish the game
    */
@@ -28,12 +29,8 @@ public class pokerMain {
     do {
       userIn = scnr.next().trim().toLowerCase();
       if (userIn.charAt(0) == 'y') {
-        System.out.println("Shuffling cards...");
-        shuffleCards();
-        while (win == 0) {
-          win = playGame(generateDeck());
-        }
-
+        System.out.println("Shuffling Cards...");
+        win = playGame();
       } else if (userIn.charAt(0) == 'h') {
         System.out.println("===========Rules===========\nThis is a guessing game"
             + " that is played with one deck of cards and four stages\n1. Guess "
@@ -48,7 +45,7 @@ public class pokerMain {
       } else if (userIn.charAt(0) == 'q') { // quits if the user enters q
         break;
       } else { // re-prompt the user if 'n' or incorrect input is entered
-        System.out.println("Press y to play, q to quit, and h for instructions");
+        System.out.println("Press y to play, q to quit, and h for help");
         continue;
       }
 
@@ -62,34 +59,34 @@ public class pokerMain {
   }
 
   /**
-   * Helper method for try catch block used for delay timer to shuffle cards for
-   * ~effect~
+   * Helper method used to check if there are cards in the deck. Try catch 
+   * block timer used for ~effect~
    */
-  public static void shuffleCards() {
-    try {
-      TimeUnit.SECONDS.sleep(2); // shuffling time delay for effect
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+  public static void checkDeck() {
+    if (cardDeck.size() == 0) {
+      System.out.println("Deck out of cards.");
+      generateDeck();
+      try {
+        System.out.println("Shuffling...");
+        TimeUnit.SECONDS.sleep(2);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
   }
 
   /**
    * This method is used to loop the game outside of the main method
    * 
-   * @param cardDeck the continuous (sorted) deck of cards the user is playing
-   *                 with
    * @return an integer that tells the main method whether the player won or not
    */
-  public static int playGame(ArrayList<String> cardDeck) {
+  public static int playGame() {
     int complete = 0;
+    generateDeck();
 
     while (complete == 0) {
-      if (cardDeck.size() == 0) { // checks if there are cards in the deck
-        System.out.println("Reshuffling...");
-        shuffleCards();
-        cardDeck = generateDeck(); // creates a new full deck
-      }
-      complete = colorGuess(cardDeck); // starts the game with the color guess
+      checkDeck();
+      complete = colorGuess(); // starts the game with the color guess
     }
     return complete;
   }
@@ -127,17 +124,13 @@ public class pokerMain {
    *                 with
    * @return 1 if the user wins, 0 otherwise
    */
-  public static int colorGuess(ArrayList<String> cardDeck) {
+  public static int colorGuess() {
     Scanner scnr = new Scanner(System.in);
     int toggle = 0;
     int cardVal;
 
     while (toggle == 0) { // runs the color guess until the user wins or quits
-      if (cardDeck.size() == 0) {
-        System.out.println("Reshuffling...");
-        shuffleCards();
-        cardDeck = generateDeck(); // creates a new full deck
-      }
+      checkDeck();
       System.out.println("\nRed or Black?"); // Prompts the user
       String color = scnr.next().trim().toLowerCase();
       int cardNum = genCard(cardDeck); // randomly selects a card from user deck
@@ -218,21 +211,21 @@ public class pokerMain {
    * 
    * @return the sorted deck
    */
-  public static ArrayList<String> generateDeck() {
+  public static void generateDeck() {
     String[] Suits = { "Hearts", "Clubs", "Spades", "Diamonds" };
     String[] Values = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",
       "Jack", "Queen", "King" };
     int suitsLength = Suits.length;
     int valuesLength = Values.length;
-    ArrayList<String> deck = new ArrayList<String>();
+    //ArrayList<String> deck = new ArrayList<String>();
 
     // fills the card deck with each suit and value
     for (int i = 0; i < suitsLength; i++) {
       for (int j = 0; j < valuesLength; j++) {
-        deck.add(Values[j] + " of " + Suits[i]);
+        cardDeck.add(Values[j] + " of " + Suits[i]);
       }
     }
-    return deck;
+    //return deck;
   }
 
   /**
@@ -250,11 +243,7 @@ public class pokerMain {
     int nextCardVal = 0;
 
     while (toggle == 0) {
-      if (cardDeck.size() == 0) { // creates a new deck if the current one is empty
-        System.out.println("Reshuffling...");
-        shuffleCards();
-        cardDeck = generateDeck();
-      }
+      checkDeck();
       System.out.println("\nHigher, Lower, or Same? (Aces low)"); // user prompt
       String guess = scnr.next().trim().toLowerCase();
       int nextCard = genCard(cardDeck); // randomly selects a card from user deck
@@ -290,7 +279,7 @@ public class pokerMain {
       // advances the game
       inOrOut(cardDeck, nextCardVal, cardVal);
     } else if (toggle == -1) {
-      playGame(cardDeck); // if incorrect the game is restarted
+      playGame(); // if incorrect the game is restarted
     }
     scnr.close();
   }
@@ -319,11 +308,7 @@ public class pokerMain {
     }
 
     while (toggle == 0) {
-      if (cardDeck.size() == 0) {
-        System.out.println("Reshuffling...");
-        shuffleCards();
-        cardDeck = generateDeck();
-      }
+      checkDeck();
 
       System.out.println("\nIn or Out?"); // User prompt
 
@@ -357,7 +342,7 @@ public class pokerMain {
     if (toggle == 1) {
       suitGuess(cardDeck); // goes to the final part of the game
     } else {
-      playGame(cardDeck); // starts the game over
+      playGame(); // starts the game over
     }
     scnr.close();
   }
@@ -374,11 +359,7 @@ public class pokerMain {
     int toggle = 0;
 
     while (toggle == 0) {
-      if (cardDeck.size() == 0) { // makes sure there are cards in the deck
-        System.out.println("Reshuffling...");
-        shuffleCards();
-        cardDeck = generateDeck();
-      }
+      checkDeck();
 
       int nextCard = genCard(cardDeck);
       String nextCardString = cardDeck.get(nextCard);
@@ -397,7 +378,7 @@ public class pokerMain {
       }
     }
     if (toggle == -1) {
-      playGame(cardDeck); // restarts the game
+      playGame(); // restarts the game
     }
     scnr.close();
   }
