@@ -14,12 +14,12 @@ import java.util.ArrayList;
  */
 public class pokerMain {
   static ArrayList<String> cardDeck = new ArrayList<String>();
+  static Scanner scnr = new Scanner(System.in);
   /**
    * Main Method used to initialize and finish the game
    */
   public static void main(String args[]) {
     int complete = 0;
-    Scanner scnr = new Scanner(System.in);
 
     // User menu prompt
     System.out.println("Are you ready to ride the bus? (y/n)");
@@ -48,7 +48,6 @@ public class pokerMain {
         userIn = scnr.next().trim().toLowerCase();
       }
     }
-    // complete will change to 1 if the user wins which will exit the loop
     System.out.println("\nThanks for playing!");
     scnr.close();
   }
@@ -58,7 +57,7 @@ public class pokerMain {
    * block timer used for ~effect~
    */
   public static void checkDeck() {
-    if (cardDeck.size() == 0) {
+    if (cardDeck.isEmpty()) {
       System.out.println("Deck out of cards.");
       generateDeck();
       try {
@@ -106,51 +105,51 @@ public class pokerMain {
    * @return 1 if the user wins, 0 otherwise
    */
   public static int colorGuess() {
-    Scanner scnr = new Scanner(System.in);
-    int toggle = 0;
-    int cardVal;
+    int complete = 0;
+    int cardVal;    
 
-    while (toggle == 0) { // runs the color guess until the user wins or quits
+    // runs the color guess until the user wins or quits
+    while (complete == 0) {
       checkDeck();
-      System.out.println("\nRed or Black?"); // Prompts the user
-      String color = scnr.next().trim().toLowerCase();
+      String userIn = "";
+
+      while (!userIn.equals("red") && !userIn.equals("black") && !userIn.equals("q")) {
+        System.out.println("\nRed or Black?"); // Prompts the user
+        userIn = scnr.next().trim().toLowerCase();
+      }
+      if (userIn.equals("q")) {
+        return -1;
+      }
+
       int cardNum = genCard(); // randomly selects a card from user deck
       String drawnCard = cardDeck.get(cardNum); // gets the name of the card
       cardDeck.remove(cardNum);
       cardVal = cardVal(drawnCard);
 
       // if user guesses correctly when it is red
-      if ((color.equals("red") && 
+      if ((userIn.equals("red") && 
         (drawnCard.contains("Hearts") || drawnCard.contains("Diamonds")))) {
-        // prints the card and praises user
-        System.out.println(drawnCard);
-        System.out.println("Good Work");
-        highOrLow(cardVal);
-        toggle = 1; // signal if user won
+        System.out.println(drawnCard + "\nGood Work");
+        complete = highOrLow(cardVal);
       }
       // if user guesses correctly when it is black
-      else if ((color.equals("black") && 
+      else if ((userIn.equals("black") && 
         (drawnCard.contains("Spades") || drawnCard.contains("Clubs")))) {
         cardVal = cardVal(drawnCard); // saves the numerical value of the card
-        // prints the card and praises user
         System.out.println(drawnCard + "\nGood Work");
         // proceed to the next part of the game
-        highOrLow(cardVal); 
-        toggle = 1; // signal if user won
+        complete = highOrLow(cardVal); 
       }
       // if user is incorrect
       else {
-        if (color.equals("black")) {
-          // prints the card and tells the user they are wrong
+        if (userIn.equals("black")) {
           System.out.println(drawnCard + "\nIncorrect, the card is red.");
         } else {
           System.out.println(drawnCard + "\nIncorrect, the card is black.");
         }
       }
     }
-    scnr.close();
-
-    return toggle;
+    return complete;
   }
 
   /**
@@ -211,51 +210,39 @@ public class pokerMain {
    *                 with
    * @param cardVal  numeric value of the previous card
    */
-  public static void highOrLow(int cardVal) {
-    Scanner scnr = new Scanner(System.in);
-    int toggle = 0; // 1 for correct -1 for incorrect
+  public static int highOrLow(int cardVal) {
     int nextCardVal = 0;
 
-    while (toggle == 0) {
-      checkDeck();
-      System.out.println("\nHigher, Lower, or Same? (Aces low)"); // user prompt
-      String guess = scnr.next().trim().toLowerCase();
-      int nextCard = genCard(); // randomly selects a card from user deck
-      String nextCardString = cardDeck.get(nextCard); // gets the name of the card
-      nextCardVal = cardVal(nextCardString); // gets the numeric value of the card
-      System.out.println(nextCardString);
-      cardDeck.remove(nextCard);
+    checkDeck();
+    System.out.println("\nHigher, Lower, or Same? (Aces low)"); // user prompt
+    String guess = scnr.next().trim().toLowerCase();
+    int nextCard = genCard(); // randomly selects a card from user deck
+    String nextCardString = cardDeck.get(nextCard); // gets the name of the card
+    nextCardVal = cardVal(nextCardString); // gets the numeric value of the card
+    System.out.println(nextCardString);
+    cardDeck.remove(nextCard);
 
-      // correct if the new card is higher than the previous and user input is higher
-      if ((guess.contains("higher")) && (nextCardVal > cardVal)) {
-        System.out.println("Sick!!");
-        toggle = 1;
-      }
-      // correct if the new card is lower than the previous and user input is lower
-      else if ((guess.contains("lower")) && (nextCardVal < cardVal)) {
-        System.out.println("Sick!!");
-        toggle = 1;
-      }
-      // incorrect if the cards are the same value
-      else if ((guess.contains("same")) && nextCardVal == cardVal) {
-        System.out.println("Well Played!!!");
-        toggle = 1;
-      } else {
-        if (nextCardVal == cardVal) {
-          System.out.println("You hate to see it");
-        }
-        System.out.println("\nBack to colors :/");
-        toggle = -1;
-        break;
-      }
+    // correct if the new card is higher than the previous and user input is higher
+    if ((guess.contains("higher")) && (nextCardVal > cardVal)) {
+      System.out.println("Sick!!");
+      return inOrOut(nextCardVal, cardVal);
     }
-    if (toggle == 1) {
-      // advances the game
-      inOrOut(cardDeck, nextCardVal, cardVal);
-    } else if (toggle == -1) {
-      playGame(); // if incorrect the game is restarted
+    // correct if the new card is lower than the previous and user input is lower
+    else if ((guess.contains("lower")) && (nextCardVal < cardVal)) {
+      System.out.println("Sick!!");
+      return inOrOut(nextCardVal, cardVal);
     }
-    scnr.close();
+    // incorrect if the cards are the same value
+    else if ((guess.contains("same")) && nextCardVal == cardVal) {
+      System.out.println("Well Played!!!");
+      return inOrOut(nextCardVal, cardVal);
+    } else {
+      if (nextCardVal == cardVal) {
+        System.out.println("You hate to see it");
+      }
+      System.out.println("\nBack to colors :/");
+      return 0;
+    }
   }
 
   /**
@@ -269,56 +256,42 @@ public class pokerMain {
    * @param secondCardVal the int value of the second card drawn
    * @param firstCardVal  the int value of the first card drawn
    */
-  public static void inOrOut(ArrayList<String> cardDeck, int secondCardVal, int firstCardVal) {
-    Scanner scnr = new Scanner(System.in);
-    int toggle = 0;
-
-    // Makes the secondCardVal always greater than cardVal
-    // for easier comparison
+  public static int inOrOut(int secondCardVal, int firstCardVal) {
+    // Makes the secondCardVal always greater than cardVal for comparison
     if (firstCardVal > secondCardVal) {
       int temp = secondCardVal;
       secondCardVal = firstCardVal;
       firstCardVal = temp;
     }
 
-    while (toggle == 0) {
-      checkDeck();
+    checkDeck();
 
-      System.out.println("\nIn or Out?"); // User prompt
+    System.out.println("\nIn or Out?"); // User prompt
 
-      String userIn = scnr.next().trim().toLowerCase();
-      // retrieves the next card and saves its integer value
-      int nextCard = genCard();
-      String nextCardString = cardDeck.get(nextCard);
-      int nextCardVal = cardVal(nextCardString);
-      System.out.println(nextCardString); // print the next card
-      cardDeck.remove(nextCard);
+    String userIn = scnr.next().trim().toLowerCase();
+    // retrieves the next card and saves its integer value
+    int nextCard = genCard();
+    String nextCardString = cardDeck.get(nextCard);
+    int nextCardVal = cardVal(nextCardString);
+    System.out.println(nextCardString); // print the next card
+    cardDeck.remove(nextCard);
 
-      if (userIn.contains("in") && (nextCardVal < secondCardVal) && (nextCardVal > firstCardVal)) {
-        System.out.println("Couldn't have done it better myself");
-        toggle = 1; // if the user guesses correctly toggle signals 1
-      } else if (userIn.contains("out") && 
-          ((nextCardVal > secondCardVal) || (nextCardVal < firstCardVal))) {
-        System.out.println("You know it");
-        toggle = 1; // if the user guesses correctly toggle signals 1
-      }
-      // if the next card value is the same as either of the previous cards, restart
-      else if ((nextCardVal == secondCardVal) || (nextCardVal == firstCardVal)) {
-        System.out.println("Super unlucky...");
-        toggle = -1; // indicates user was incorrect
-        break;
-      } else {
-        System.out.println("You were so close!");
-        toggle = -1;
-        break;
-      }
+    if (userIn.contains("in") && (nextCardVal < secondCardVal) && (nextCardVal > firstCardVal)) {
+      System.out.println("Couldn't have done it better myself");
+      return suitGuess();
+    } else if (userIn.contains("out") && 
+        ((nextCardVal > secondCardVal) || (nextCardVal < firstCardVal))) {
+      System.out.println("You know it");
+      return suitGuess();
     }
-    if (toggle == 1) {
-      suitGuess(cardDeck); // goes to the final part of the game
+    // if the next card value is the same as either of the previous cards, restart
+    else if ((nextCardVal == secondCardVal) || (nextCardVal == firstCardVal)) {
+      System.out.println("Super unlucky...");
+      return 0;
     } else {
-      playGame(); // starts the game over
+      System.out.println("You were so close!");
+      return 0;
     }
-    scnr.close();
   }
 
   /**
@@ -328,33 +301,22 @@ public class pokerMain {
    * @param cardDeck the continuous (sorted) deck of cards the user is playing
    *                 with
    */
-  public static void suitGuess(ArrayList<String> cardDeck) {
-    Scanner scnr = new Scanner(System.in);
-    int toggle = 0;
+  public static int suitGuess() {
+    checkDeck();
 
-    while (toggle == 0) {
-      checkDeck();
+    int nextCard = genCard();
+    String nextCardString = cardDeck.get(nextCard);
+    System.out.println("\nWhat Suit? (Clubs, Diamonds, Hearts, Spades)");
+    String userIn = scnr.next().trim().toLowerCase();
+    System.out.println(nextCardString);
+    cardDeck.remove(nextCard);
 
-      int nextCard = genCard();
-      String nextCardString = cardDeck.get(nextCard);
-      System.out.println("\nWhat Suit? (Clubs, Diamonds, Hearts, Spades)");
-      System.out.println(nextCardString);
-      String userIn = scnr.next().trim().toLowerCase();
-      System.out.println(nextCardString); // prints the card after guess
-      cardDeck.remove(nextCard);
-
-      if ((nextCardString.toLowerCase().contains(userIn))) {
-        System.out.println("Congratulations, you win!");
-        break;
-      } else {
-        System.out.println("So close! Back to the beginning.");
-        toggle = -1; // signal for restart
-        break;
-      }
+    if ((nextCardString.toLowerCase().contains(userIn))) {
+      System.out.println("Congratulations, you win!");
+      return 1;
+    } else {
+      System.out.println("So close! Back to the beginning.");
+      return 0;
     }
-    if (toggle == -1) {
-      playGame(); // restarts the game
-    }
-    scnr.close();
   }
 }
