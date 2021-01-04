@@ -32,9 +32,9 @@ public class pokerMain {
             + "is higher, lower, or the same compared to the previously drawn"
             + " card\n3. Guess if the next card is in between or"
             + " outside the value of the two previous cards\n4. Guess the suit of a drawn"
-            + " card\nType exactly what the prompt asks for or 'q' to quit"
-            + "\nAnytime you are incorrect the game will restart back at colors."
-            + "\n\nGood Luck! - Press y to play or q to quit");
+            + " card\nFor each stage, read the prompt and type your guess from the "
+            + "choices in the brackets []\nAnytime you are incorrect the game will "
+            + "restart back at colors.\n\nGood Luck! - Press y to play or q to quit");
             userIn = scnr.next().trim().toLowerCase();
       } else {
         System.out.println("Press y to play, q to quit, and h for help");
@@ -62,8 +62,8 @@ public class pokerMain {
       checkDeck();
       String userIn = "";
 
-      while (!userIn.equals("red") && !userIn.equals("black") && !userIn.equals("q")) {
-        System.out.println("\nRed or Black?"); // Prompts the user
+      while (!userIn.equals("r") && !userIn.equals("b") && !userIn.equals("q")) {
+        System.out.println("\nRed or Black? [r/b]"); // Prompts the user
         userIn = scnr.next().trim().toLowerCase();
       }
       if (userIn.equals("q")) {
@@ -74,13 +74,13 @@ public class pokerMain {
       cardVal = cardVal(drawnCard);
 
       // if user guesses correctly when it is red
-      if ((userIn.equals("red") && 
+      if ((userIn.equals("r") && 
         (drawnCard.contains("Hearts") || drawnCard.contains("Diamonds")))) {
         System.out.println(drawnCard + "\nGood Work");
         complete = highOrLow(cardVal);
       }
       // if user guesses correctly when it is black
-      else if ((userIn.equals("black") && 
+      else if ((userIn.equals("b") && 
         (drawnCard.contains("Spades") || drawnCard.contains("Clubs")))) {
         cardVal = cardVal(drawnCard); // saves the numerical value of the card
         System.out.println(drawnCard + "\nGood Work");
@@ -89,7 +89,7 @@ public class pokerMain {
       }
       // if user is incorrect
       else {
-        if (userIn.equals("black")) {
+        if (userIn.equals("b")) {
           System.out.println(drawnCard + "\nIncorrect, the card is red.");
         } else {
           System.out.println(drawnCard + "\nIncorrect, the card is black.");
@@ -109,9 +109,9 @@ public class pokerMain {
     checkDeck();
     String userIn = "";
 
-    while (!userIn.equals("higher") && !userIn.equals("lower") 
-      && !userIn.equals("same") && !userIn.equals("q")) {
-      System.out.println("\nHigher, Lower, or Same? (Aces low)"); // user prompt
+    while (!userIn.equals("h") && !userIn.equals("l") 
+      && !userIn.equals("s") && !userIn.equals("q")) {
+      System.out.println("\nHigher, Lower, or Same? [h/l/s] (Aces low)"); // user prompt
       userIn = scnr.next().trim().toLowerCase();
     }
     if (userIn.equals("q")) {
@@ -123,16 +123,16 @@ public class pokerMain {
     System.out.println(nextCardString);
 
     // compare user input to card values
-    if ((userIn.equals("higher")) && (nextCardVal > cardVal)) {
+    if ((userIn.equals("h")) && (nextCardVal > cardVal)) {
       System.out.println("Sick!!");
       return inOrOut(nextCardVal, cardVal);
     }
-    else if ((userIn.equals("lower")) && (nextCardVal < cardVal)) {
+    else if ((userIn.equals("l")) && (nextCardVal < cardVal)) {
       System.out.println("Sick!!");
       return inOrOut(nextCardVal, cardVal);
     }
     // incorrect if the cards are the same value
-    else if ((userIn.equals("same")) && nextCardVal == cardVal) {
+    else if ((userIn.equals("s")) && nextCardVal == cardVal) {
       System.out.println("Well Played!!!");
       return inOrOut(nextCardVal, cardVal);
     } else {
@@ -162,10 +162,10 @@ public class pokerMain {
       firstCardVal = temp;
     }
     String userIn = "";
-    while (!userIn.equals("in") && !userIn.equals("out") 
+    while (!userIn.equals("i") && !userIn.equals("o") 
       && !userIn.equals("q")) {
       System.out.println("\nIn or out? -> " + firstCardVal + 
-        " and "+ secondCardVal);
+        " and "+ secondCardVal + " [i/o]");
       userIn = scnr.next().trim().toLowerCase();
     }
     if (userIn.equals("q")) {
@@ -177,10 +177,10 @@ public class pokerMain {
     int nextCardVal = cardVal(nextCardString);
     System.out.println(nextCardString); // print the next card
 
-    if (userIn.equals("in") && (nextCardVal < secondCardVal) && (nextCardVal > firstCardVal)) {
+    if (userIn.equals("i") && (nextCardVal < secondCardVal) && (nextCardVal > firstCardVal)) {
       System.out.println("Couldn't have done it better myself");
       return suitGuess();
-    } else if (userIn.equals("out") && 
+    } else if (userIn.equals("o") && 
         ((nextCardVal > secondCardVal) || (nextCardVal < firstCardVal))) {
       System.out.println("You know it");
       return suitGuess();
@@ -206,9 +206,9 @@ public class pokerMain {
     String userIn = "";
 
     // user input loop
-    while (!userIn.equals("clubs") && !userIn.equals("spades") && !userIn.equals("diamonds") 
-      && !userIn.equals("hearts") && !userIn.equals("q")) {
-      System.out.println("\nWhat Suit? (Clubs, Diamonds, Hearts, Spades)");
+    while (!userIn.equals("c") && !userIn.equals("s") && !userIn.equals("d") 
+      && !userIn.equals("h") && !userIn.equals("q")) {
+      System.out.println("\nWhat Suit? [c/d/h/s] (Clubs, Diamonds, Hearts, Spades)");
       userIn = scnr.next().trim().toLowerCase();
     }
     if (userIn.equals("q")) {
@@ -218,8 +218,10 @@ public class pokerMain {
     // draws a card
     String nextCardString = genCard();
     System.out.println(nextCardString);
+    // split for user and suit comparison
+    String[] splitCardString = nextCardString.split(" ");
 
-    if ((nextCardString.toLowerCase().contains(userIn))) {
+    if ((splitCardString[2].toLowerCase().charAt(0) == userIn.charAt(0))) {
       System.out.println("\nCongratulations, you win!");
       while (!userIn.equals("y") && !userIn.equals("n")) {
         System.out.println("Would you like to play again? (y/n)");
@@ -244,7 +246,7 @@ public class pokerMain {
    */
   public static void checkDeck() {
     if (cardDeck.isEmpty()) {
-      System.out.println("Deck out of cards.");
+      System.out.println("\nDeck out of cards.");
       generateDeck();
     }
   }
