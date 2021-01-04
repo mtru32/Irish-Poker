@@ -23,7 +23,7 @@ public class pokerMain {
     System.out.println("Are you ready to ride the bus? (y/n)");
     System.out.println("Press h for help");
     String userIn = scnr.next().trim().toLowerCase();
-    // do/while loop that repeats prompts until user wins or presses q
+    // loop until user enters valid input
     while (!userIn.equals("q") && !userIn.equals("y")) {
       if (userIn.charAt(0) == 'h') {
         System.out.println("\n===========Rules===========\nThis is a guessing game"
@@ -294,11 +294,9 @@ public class pokerMain {
    */
   public static void generateDeck() {
     System.out.println("Shuffling Cards...");
-    try {
-      TimeUnit.SECONDS.sleep(2);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+    if (!cardDeck.isEmpty()) {
+      cardDeck.clear();
+    }    
     String[] Suits = { "Hearts", "Clubs", "Spades", "Diamonds" };
     String[] Values = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",
       "Jack", "Queen", "King" };
@@ -307,6 +305,11 @@ public class pokerMain {
       for (int j = 0; j < Values.length; j++) {
         cardDeck.add(Values[j] + " of " + Suits[i]);
       }
+    }
+    try {
+      TimeUnit.SECONDS.sleep(2);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
 }
