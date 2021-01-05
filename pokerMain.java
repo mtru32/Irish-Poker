@@ -248,6 +248,10 @@ public class pokerMain {
    * Helper method used to check if there are cards in the deck.
    */
   public static void checkDeck() {
+    if (masterDeck.size() != 52) {
+      masterDeck.clear();
+      initMasterDeck();
+    }
     if (cardDeck.isEmpty()) {
       System.out.println("\nDeck out of cards.");
       System.out.print("Re-");
