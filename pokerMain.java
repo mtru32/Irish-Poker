@@ -43,7 +43,7 @@ public class pokerMain {
       }
     }
     if (userIn.charAt(0) == 'y') {
-      initDeck();
+      initMasterDeck();
       genDeck();
       colorGuess();
     }
@@ -250,6 +250,7 @@ public class pokerMain {
   public static void checkDeck() {
     if (cardDeck.isEmpty()) {
       System.out.println("\nDeck out of cards.");
+      System.out.print("Re-");
       genDeck();
     }
   }
@@ -294,7 +295,7 @@ public class pokerMain {
    * Creates a master deck to be copied so values and suits only need to be
    * generated once
    */
-  public static void initDeck() {
+  public static void initMasterDeck() {
     String[] Suits = { "Hearts", "Clubs", "Spades", "Diamonds" };
     String[] Values = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",
       "Jack", "Queen", "King" };
