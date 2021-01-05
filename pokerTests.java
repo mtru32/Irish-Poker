@@ -15,7 +15,7 @@ public class pokerTests {
   public static boolean testDecks() {
     boolean pass;
     pokerMain.initDeck();
-    pokerMain.generateDeck();
+    pokerMain.genDeck();
     pokerMain.cardDeck.remove(0);
     pokerMain.cardDeck.remove(0);
     
@@ -24,7 +24,7 @@ public class pokerTests {
     } else {
       pass = true;
     }
-    pokerMain.generateDeck();
+    pokerMain.genDeck();
     if (pokerMain.cardDeck.size() != pokerMain.masterDeck.size()) {
       pass = false;
     } else {
@@ -36,7 +36,7 @@ public class pokerTests {
   public static boolean testCardRemover() {
     boolean passed = true;
     pokerMain.initDeck();
-    pokerMain.generateDeck();
+    pokerMain.genDeck();
     ArrayList<String> deck = pokerMain.cardDeck;
     while (deck.size() > 0) {
       pokerMain.genCard();
@@ -73,7 +73,7 @@ public class pokerTests {
 
   public static void testSuitGuess() {
     pokerMain.initDeck();
-    pokerMain.generateDeck();
+    pokerMain.genDeck();
     pokerMain.suitGuess();
   }
 
