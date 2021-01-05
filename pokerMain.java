@@ -309,11 +309,8 @@ public class pokerMain {
   /**
    * Generates a sorted deck from masterDeck to cardDeck with timer delay
    * for ~effect~
-   * Also
-   * This is another one
-   * yes
-   * yes
-   * jkljasd
+   * hello
+   * ello
    */
   public static void genDeck() {
     System.out.println("Shuffling Cards...");
