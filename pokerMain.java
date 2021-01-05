@@ -253,7 +253,7 @@ public class pokerMain {
       initMasterDeck();
     }
     if (cardDeck.isEmpty()) {
-      System.out.println("\nDeck out of cards.");
+      System.out.println("\nCards in deck: [0]");
       System.out.print("Re-");
       genDeck();
     }
@@ -316,7 +316,7 @@ public class pokerMain {
    * for ~effect~
    */
   public static void genDeck() {
-    System.out.println("Shuffling Cards...");
+    System.out.println("Shuffling cards...");
     if (!cardDeck.isEmpty()) {
       cardDeck.clear();
     }    
