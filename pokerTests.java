@@ -5,19 +5,18 @@ import java.util.ArrayList;
 
 public class pokerTests {
   public static void main(String[] args) {
-    // System.out.println("testCardRemover(): " + testCardRemover());
-    // System.out.println("testCardVal(): " + testCardVal());
-    // System.out.println("testDecks(): " + testDecks());
-    //testReshuffle();
-    //testSuitGuess();
+    System.out.println("testCardVal(): " + testCardVal());
+    System.out.println("testDecks(): " + testDecks());
+    System.out.println("testReshuffle(): " + testReshuffle());
+    testSuitGuess();
   }
 
-  public static boolean testDecks() {
+  private static boolean testDecks() {
     boolean pass;
-    pokerMain.initDeck();
-    pokerMain.genDeck();
+    pokerMain.checkDeck();
     pokerMain.cardDeck.remove(0);
     pokerMain.cardDeck.remove(0);
+
     
     if (pokerMain.cardDeck.size() == pokerMain.masterDeck.size()) {
       pass = false;
@@ -33,21 +32,7 @@ public class pokerTests {
     return pass;
   }
 
-  public static boolean testCardRemover() {
-    boolean passed = true;
-    pokerMain.initDeck();
-    pokerMain.genDeck();
-    ArrayList<String> deck = pokerMain.cardDeck;
-    while (deck.size() > 0) {
-      pokerMain.genCard();
-    }
-    if (deck.size() != 0) {
-      passed = false;
-    }
-    return passed;
-  }
-
-  public static boolean testCardVal() {
+  private static boolean testCardVal() {
     boolean passed = true;
     if (pokerMain.cardVal("Ace of Spades") != 1) {
       passed = false;
@@ -61,20 +46,27 @@ public class pokerTests {
     return passed;
   }
 
-  // public static void testReshuffle() {
-  //   boolean win;
-  //   do {
-  //     win = pokerMain.colorGuess();
-  //   } while (!win);
-  //   {
-  //     System.out.println("You won");
-  //   }
-  // }
+  private static boolean testReshuffle() {
+    boolean pass = true;
+    ArrayList<String> deck = pokerMain.cardDeck;
 
-  public static void testSuitGuess() {
-    pokerMain.initDeck();
-    pokerMain.genDeck();
-    pokerMain.suitGuess();
+    pokerMain.checkDeck();
+
+    while (deck.size() > 0) {
+      pokerMain.genCard();
+    }
+    
+    pokerMain.checkDeck();
+    if (deck.size() != 52) {
+      return false;
+    }
+    return pass;
+  }
+
+  private static void testSuitGuess() {
+    pokerMain.checkDeck();
+    System.out.println("\n**Press q to end test**");
+    while (!pokerMain.suitGuess());
   }
 
 }
