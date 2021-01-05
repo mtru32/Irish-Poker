@@ -43,8 +43,7 @@ public class pokerMain {
       }
     }
     if (userIn.charAt(0) == 'y') {
-      initMasterDeck();
-      genDeck();
+      checkDeck();
       colorGuess();
     }
     System.out.println("\nThanks for playing!\n");
@@ -309,6 +308,7 @@ public class pokerMain {
         masterDeck.add(Values[j] + " of " + Suits[i]);
       }
     }
+    genDeck();
   }
 
   /**
