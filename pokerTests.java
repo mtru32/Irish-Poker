@@ -7,17 +7,39 @@ public class pokerTests {
   public static void main(String[] args) {
     // System.out.println("testCardRemover(): " + testCardRemover());
     // System.out.println("testCardVal(): " + testCardVal());
-    testReshuffle();
-    // testSuitGuess();
+    // System.out.println("testDecks(): " + testDecks());
+    //testReshuffle();
+    //testSuitGuess();
+  }
+
+  public static boolean testDecks() {
+    boolean pass;
+    pokerMain.initDeck();
+    pokerMain.generateDeck();
+    pokerMain.cardDeck.remove(0);
+    pokerMain.cardDeck.remove(0);
+    
+    if (pokerMain.cardDeck.size() == pokerMain.masterDeck.size()) {
+      pass = false;
+    } else {
+      pass = true;
+    }
+    pokerMain.generateDeck();
+    if (pokerMain.cardDeck.size() != pokerMain.masterDeck.size()) {
+      pass = false;
+    } else {
+      pass = true;
+    }
+    return pass;
   }
 
   public static boolean testCardRemover() {
     boolean passed = true;
-
-    ArrayList<String> deck = pokerMain.generateDeck();
+    pokerMain.initDeck();
+    pokerMain.generateDeck();
+    ArrayList<String> deck = pokerMain.cardDeck;
     while (deck.size() > 0) {
-      int cardNum = pokerMain.genCard(deck);
-      pokerMain.removeCard(deck, cardNum);
+      pokerMain.genCard();
     }
     if (deck.size() != 0) {
       passed = false;
@@ -39,20 +61,20 @@ public class pokerTests {
     return passed;
   }
 
-  public static void testReshuffle() {
-    int win = 0;
-    ArrayList<String> cardDeck = new ArrayList<String>();
-    do {
-      win = pokerMain.playGame(cardDeck);
-    } while (win == 0);
-    {
-      System.out.println("You won");
-    }
-  }
+  // public static void testReshuffle() {
+  //   boolean win;
+  //   do {
+  //     win = pokerMain.colorGuess();
+  //   } while (!win);
+  //   {
+  //     System.out.println("You won");
+  //   }
+  // }
 
   public static void testSuitGuess() {
-    ArrayList<String> cardDeck = pokerMain.generateDeck();
-    pokerMain.suitGuess(cardDeck);
+    pokerMain.initDeck();
+    pokerMain.generateDeck();
+    pokerMain.suitGuess();
   }
 
 }
