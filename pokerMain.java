@@ -43,7 +43,6 @@ public class pokerMain {
       }
     }
     if (userIn.charAt(0) == 'y') {
-      checkDeck();
       colorGuess();
     }
     System.out.println("\nThanks for playing!\n");
@@ -177,7 +176,7 @@ public class pokerMain {
     // retrieves the next card and saves its integer value
     String nextCardString = genCard();
     int nextCardVal = cardVal(nextCardString);
-    System.out.println("\n" + nextCardString); // print the next card
+    System.out.println("\n" + nextCardString);
 
     if (userIn.equals("i") && (nextCardVal < secondCardVal) && (nextCardVal > firstCardVal)) {
       quip(true);
