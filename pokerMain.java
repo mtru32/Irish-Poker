@@ -16,27 +16,20 @@ public class pokerMain {
   static ArrayList<String> masterDeck = new ArrayList<String>();
   static ArrayList<String> cardDeck = new ArrayList<String>();
   static Scanner scnr = new Scanner(System.in);
+  static final String RULES = "\n=============== Rules ===============\nThis is a guessing game that is played with one deck of cards and four stages. Aces are low.\n1. Guess the color of the card (red or black)\n2. Guess if the next card is higher, lower, or the same compared to the previously drawn card\n3. Guess if the next card is in between or outside the value of the two previous cards\n4. Guess the suit of a drawn card\nFor each stage, read the prompt and type your guess from the choices in the brackets []\nAnytime you are incorrect the game will restart back at colors.\n\nGood Luck!";
 
   /**
    * Main Method used to initialize and finish the game
    */
   public static void main(String args[]) {
     // User menu prompt
-    System.out.println("Are you ready to ride the bus? (y/n)");
-    System.out.println("Press h for help");
-    String userIn = scnr.next().trim().toLowerCase();
-    // loop until user enters valid input
-    while (!userIn.equals("q") && !userIn.equals("y")) {
-      if (userIn.charAt(0) == 'h') {
-        System.out.println(
-            "\n=============== Rules ===============\nThis is a guessing game that is played with one deck of cards and four stages. Aces are low.\n1. Guess the color of the card (red or black)\n2. Guess if the next card is higher, lower, or the same compared to the previously drawn card\n3. Guess if the next card is in between or outside the value of the two previous cards\n4. Guess the suit of a drawn card\nFor each stage, read the prompt and type your guess from the choices in the brackets []\nAnytime you are incorrect the game will restart back at colors.\n\nGood Luck! - Press y to play or q to quit");
-        userIn = scnr.next().trim().toLowerCase();
-      } else {
-        System.out.println("Press y to play, q to quit, and h for help");
-        userIn = scnr.next().trim().toLowerCase();
-      }
-    }
-    if (userIn.charAt(0) == 'y') {
+    System.out.println("Are you ready to ride the bus?");
+    String prompt = "Press y to play, q to quit, and e for help.";
+    ArrayList<String> validInput = new ArrayList<String>();
+    validInput.add("y");
+
+    String userIn = inputLoop(validInput, prompt);
+    if (userIn.equals("y")) {
       colorGuess();
     }
     System.out.println("\nThanks for playing!\n");
@@ -66,19 +59,18 @@ public class pokerMain {
 
       // gets name and numeric value of card
       String drawnCard = genCard();
-      cardVal = cardVal(drawnCard);
       System.out.println("\n" + drawnCard);
 
       // if user guesses correctly when it is red
       if ((userIn.equals("r") && (drawnCard.contains("Hearts") || drawnCard.contains("Diamonds")))) {
         quip(true);
-        complete = highOrLow(cardVal);
+        complete = highOrLow(drawnCard);
       }
       // if user guesses correctly when it is black
       else if ((userIn.equals("b") && (drawnCard.contains("Spades") || drawnCard.contains("Clubs")))) {
         quip(true);
         // proceed to the next part of the game
-        complete = highOrLow(cardVal);
+        complete = highOrLow(drawnCard);
       }
       // if user is incorrect
       else {
@@ -94,9 +86,10 @@ public class pokerMain {
    * @param cardVal numeric value of the previous card
    * @return boolean value signaling whether or not the game is complete
    */
-  public static boolean highOrLow(int prevCardVal) {
+  public static boolean highOrLow(String prevCard) {
     checkDeck();
-    String prompt = "\nHigher, Lower, or Same? [h/l/s]";
+    int prevCardVal = cardVal(prevCard);
+    String prompt = "\nHigher, lower, or the Same? [h/l/s]\n-> " + prevCard;
     ArrayList<String> validInput = new ArrayList<String>();
     validInput.add("h");
     validInput.add("l");
@@ -151,7 +144,7 @@ public class pokerMain {
       secondCardVal = firstCardVal;
       firstCardVal = temp;
     }
-    String prompt = "\nIn or out? -> " + firstCardVal + " and " + secondCardVal + " [i/o]";
+    String prompt = "\nIn or out? [i/o]\n-> " + firstCardVal + " and " + secondCardVal;
     ArrayList<String> validInput = new ArrayList<String>();
     validInput.add("i");
     validInput.add("o");
@@ -193,7 +186,7 @@ public class pokerMain {
   public static boolean suitGuess() {
     checkDeck();
 
-    String prompt = "\nWhat Suit? [c/d/h/s] (Clubs, Diamonds, Hearts, Spades)";
+    String prompt = "\nClubs, Diamonds, Hearts, or Spades? [c/d/h/s]";
     ArrayList<String> validInput = new ArrayList<String>();
     validInput.add("c");
     validInput.add("d");
@@ -254,6 +247,9 @@ public class pokerMain {
     validInput.add("q");
 
     while (!validInput.contains(userIn)) {
+      if (userIn.equals("e")) {
+        System.out.println(RULES);
+      }
       System.out.println(prompt);
       userIn = scnr.next().trim().toLowerCase();
     }
