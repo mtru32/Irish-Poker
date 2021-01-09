@@ -1,35 +1,26 @@
 // Created By Mark Truttmann
-// May, Summer 2019
+// Summer 2019
+// Edited Winter 2020
 
 import java.util.ArrayList;
 
 public class pokerTests {
   public static void main(String[] args) {
-    System.out.println("testCardVal(): " + testCardVal());
-    System.out.println("testDecks(): " + testDecks());
-    System.out.println("testReshuffle(): " + testReshuffle());
-    testSuitGuess();
+    // System.out.println("testCardVal(): " + testCardVal());
+    // System.out.println("testDecks(): " + testDecks());
+    // System.out.println("testReshuffle(): " + testReshuffle());
+    // testSuitGuess();
   }
 
   private static boolean testDecks() {
-    boolean pass;
     pokerMain.checkDeck();
     pokerMain.cardDeck.remove(0);
     pokerMain.cardDeck.remove(0);
 
-    
-    if (pokerMain.cardDeck.size() == pokerMain.masterDeck.size()) {
-      pass = false;
-    } else {
-      pass = true;
-    }
+    boolean test1 = pokerMain.cardDeck.size() != pokerMain.masterDeck.size();
     pokerMain.genDeck();
-    if (pokerMain.cardDeck.size() != pokerMain.masterDeck.size()) {
-      pass = false;
-    } else {
-      pass = true;
-    }
-    return pass;
+    boolean test2 = pokerMain.cardDeck.size() == pokerMain.masterDeck.size();
+    return test1 && test2;
   }
 
   private static boolean testCardVal() {
@@ -55,7 +46,7 @@ public class pokerTests {
     while (deck.size() > 0) {
       pokerMain.genCard();
     }
-    
+
     pokerMain.checkDeck();
     if (deck.size() != 52) {
       return false;
@@ -66,7 +57,8 @@ public class pokerTests {
   private static void testSuitGuess() {
     pokerMain.checkDeck();
     System.out.println("\n**Press q to end test**");
-    while (!pokerMain.suitGuess());
+    while (!pokerMain.suitGuess())
+      ;
   }
 
 }
