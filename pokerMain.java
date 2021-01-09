@@ -7,7 +7,19 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 
-/** 
+/**
+ * HELPER METHOD
+public static String helper([‘i’, ‘o]) {
+Probably also pass response
+As second argument
+You’ll use q every time, so don’t include as an arg
+While loop
+For when userIn doesn’t match anything in array of acceptable values
+Return userIn?
+You could potentially use values in first argument array to form the println question where you give the possible responses
+ */
+
+/**
  * 
  * @author Mark Truttmann
  * 
@@ -16,6 +28,7 @@ public class pokerMain {
   static ArrayList<String> masterDeck = new ArrayList<String>();
   static ArrayList<String> cardDeck = new ArrayList<String>();
   static Scanner scnr = new Scanner(System.in);
+
   /**
    * Main Method used to initialize and finish the game
    */
@@ -36,7 +49,7 @@ public class pokerMain {
             + " card\nFor each stage, read the prompt and type your guess from the "
             + "choices in the brackets []\nAnytime you are incorrect the game will "
             + "restart back at colors.\n\nGood Luck! - Press y to play or q to quit");
-            userIn = scnr.next().trim().toLowerCase();
+        userIn = scnr.next().trim().toLowerCase();
       } else {
         System.out.println("Press y to play, q to quit, and h for help");
         userIn = scnr.next().trim().toLowerCase();
@@ -55,7 +68,7 @@ public class pokerMain {
    */
   public static void colorGuess() {
     boolean complete = false;
-    int cardVal;    
+    int cardVal;
 
     // runs the game until the user wins or quits
     while (!complete) {
@@ -75,25 +88,19 @@ public class pokerMain {
       System.out.println("\n" + drawnCard);
 
       // if user guesses correctly when it is red
-      if ((userIn.equals("r") && 
-        (drawnCard.contains("Hearts") || drawnCard.contains("Diamonds")))) {
+      if ((userIn.equals("r") && (drawnCard.contains("Hearts") || drawnCard.contains("Diamonds")))) {
         quip(true);
         complete = highOrLow(cardVal);
       }
       // if user guesses correctly when it is black
-      else if ((userIn.equals("b") && 
-        (drawnCard.contains("Spades") || drawnCard.contains("Clubs")))) {
+      else if ((userIn.equals("b") && (drawnCard.contains("Spades") || drawnCard.contains("Clubs")))) {
         quip(true);
         // proceed to the next part of the game
-        complete = highOrLow(cardVal); 
+        complete = highOrLow(cardVal);
       }
       // if user is incorrect
       else {
-        if (userIn.equals("b")) {
-          System.out.println("Incorrect, the card is red.");
-        } else {
-          System.out.println("Incorrect, the card is black.");
-        }
+        System.out.println("Incorrect, the card is " + (userIn.equals("b") ? "red" : "black") + ".");
       }
     }
   }
@@ -102,32 +109,32 @@ public class pokerMain {
    * This method is used for the second part of the game where the user guesses
    * whether or not the next card is higher, lower, or the same as the previous
    * 
-   * @param cardVal  numeric value of the previous card
+   * @param cardVal numeric value of the previous card
    * @return boolean value signaling whether or not the game is complete
    */
   public static boolean highOrLow(int prevCardVal) {
     checkDeck();
     String userIn = "";
 
-    while (!userIn.equals("h") && !userIn.equals("l") 
-      && !userIn.equals("s") && !userIn.equals("q")) {
+    while (!userIn.equals("h") && !userIn.equals("l") && !userIn.equals("s") && !userIn.equals("q")) {
       System.out.println("\nHigher, Lower, or Same? [h/l/s]"); // user prompt
       userIn = scnr.next().trim().toLowerCase();
     }
     if (userIn.equals("q")) {
       return true;
-    } 
+    }
 
     String nextCardString = genCard(); // gets the name of the card
     int nextCardVal = cardVal(nextCardString); // gets the numeric value of the card
     System.out.println("\n" + nextCardString);
 
     // compare user input to card values
+
+    // FIXME: combine if and elif
     if ((userIn.equals("h")) && (nextCardVal > prevCardVal)) {
       quip(true);
       return inOrOut(nextCardVal, prevCardVal);
-    }
-    else if ((userIn.equals("l")) && (nextCardVal < prevCardVal)) {
+    } else if ((userIn.equals("l")) && (nextCardVal < prevCardVal)) {
       quip(true);
       return inOrOut(nextCardVal, prevCardVal);
     }
@@ -135,8 +142,7 @@ public class pokerMain {
     else if ((userIn.equals("s")) && nextCardVal == prevCardVal) {
       System.out.println("Calculated.\nWell Played.");
       return inOrOut(nextCardVal, prevCardVal);
-    } 
-    else {
+    } else {
       if (nextCardVal == prevCardVal) { // same card is the worst...
         System.out.println("Gotcha!\nBack To colors");
         return false;
@@ -163,10 +169,8 @@ public class pokerMain {
       firstCardVal = temp;
     }
     String userIn = "";
-    while (!userIn.equals("i") && !userIn.equals("o") 
-      && !userIn.equals("q")) {
-      System.out.println("\nIn or out? -> " + firstCardVal + 
-        " and "+ secondCardVal + " [i/o]");
+    while (!userIn.equals("i") && !userIn.equals("o") && !userIn.equals("q")) {
+      System.out.println("\nIn or out? -> " + firstCardVal + " and " + secondCardVal + " [i/o]");
       userIn = scnr.next().trim().toLowerCase();
     }
     if (userIn.equals("q")) {
@@ -178,11 +182,11 @@ public class pokerMain {
     int nextCardVal = cardVal(nextCardString);
     System.out.println("\n" + nextCardString);
 
+    // FIXME: Combine if statements
     if (userIn.equals("i") && (nextCardVal < secondCardVal) && (nextCardVal > firstCardVal)) {
       quip(true);
       return suitGuess();
-    } else if (userIn.equals("o") && 
-        ((nextCardVal > secondCardVal) || (nextCardVal < firstCardVal))) {
+    } else if (userIn.equals("o") && ((nextCardVal > secondCardVal) || (nextCardVal < firstCardVal))) {
       quip(true);
       return suitGuess();
     }
@@ -207,8 +211,8 @@ public class pokerMain {
     String userIn = "";
 
     // user input loop
-    while (!userIn.equals("c") && !userIn.equals("s") && !userIn.equals("d") 
-      && !userIn.equals("h") && !userIn.equals("q")) {
+    while (!userIn.equals("c") && !userIn.equals("s") && !userIn.equals("d") && !userIn.equals("h")
+        && !userIn.equals("q")) {
       System.out.println("\nWhat Suit? [c/d/h/s] (Clubs, Diamonds, Hearts, Spades)");
       userIn = scnr.next().trim().toLowerCase();
     }
@@ -242,7 +246,7 @@ public class pokerMain {
     }
   }
 
-    /**
+  /**
    * Helper method used to check if there are cards in the deck.
    */
   public static void checkDeck() {
@@ -258,8 +262,8 @@ public class pokerMain {
   }
 
   /**
-   * Card generator method that randomly selects and removes a card from 
-   * the sorted deck
+   * Card generator method that randomly selects and removes a card from the
+   * sorted deck
    *
    * @return the name of a card from the deck
    */
@@ -270,7 +274,9 @@ public class pokerMain {
     return cardName;
   }
 
-    /**
+  // FIXME: Try switch statement
+
+  /**
    * Helper method used to determine the numerical value of a selected card
    * 
    * @param card the name of the card drawn
@@ -289,7 +295,7 @@ public class pokerMain {
     } else if (card.contains("10")) {
       return 10;
     } else { // otherwise takes the first character of the card (always a number)
-      return Character.getNumericValue((char)card.charAt(0));
+      return Character.getNumericValue((char) card.charAt(0));
     }
   }
 
@@ -299,8 +305,7 @@ public class pokerMain {
    */
   public static void initMasterDeck() {
     String[] Suits = { "Hearts", "Clubs", "Spades", "Diamonds" };
-    String[] Values = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-      "Jack", "Queen", "King" };
+    String[] Values = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
     // fills the card deck with each suit and value
     for (int i = 0; i < Suits.length; i++) {
       for (int j = 0; j < Values.length; j++) {
@@ -311,14 +316,14 @@ public class pokerMain {
   }
 
   /**
-   * Generates a sorted deck from masterDeck to cardDeck with timer delay
-   * for ~effect~
+   * Generates a sorted deck from masterDeck to cardDeck with timer delay for
+   * ~effect~
    */
   public static void genDeck() {
     System.out.println("Shuffling cards...");
     if (!cardDeck.isEmpty()) {
       cardDeck.clear();
-    }    
+    }
     for (String c : masterDeck) {
       cardDeck.add(new String(c));
     }
@@ -335,21 +340,10 @@ public class pokerMain {
    * @param positive true/false based on if user completed their previous
    */
   public static void quip(boolean positive) {
-    String[] win = {
-      "Nice!!\nOn to the next one.",
-      "Well done.\nNext!",
-      "Good work!",
-      "Calculated.",
-      "Well played.",
-      "Couldn't have done it better myself."
-    };
-    String[] lose = {
-      "That's tough.",
-      "You hate to see it.",
-      "Better luck next time!",
-      "Savage!!\nBack to colors.",
-      "So close!"
-    };
+    String[] win = { "Nice!!\nOn to the next one.", "Well done.\nNext!", "Good work!", "Calculated.", "Well played.",
+        "Couldn't have done it better myself." };
+    String[] lose = { "That's tough.", "You hate to see it.", "Better luck next time!", "Savage!!\nBack to colors.",
+        "So close!" };
     if (positive) {
       System.out.println(win[new Random().nextInt(win.length)]);
     } else {
