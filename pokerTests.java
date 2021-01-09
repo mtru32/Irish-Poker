@@ -10,6 +10,15 @@ public class pokerTests {
     // System.out.println("testDecks(): " + testDecks());
     // System.out.println("testReshuffle(): " + testReshuffle());
     // testSuitGuess();
+    // testInputLoop();
+  }
+
+  private static void testInputLoop() {
+    String prompt = "In or out? [i/o]";
+    ArrayList<String> validInput = new ArrayList<String>();
+    validInput.add("i");
+    validInput.add("o");
+    pokerMain.inputLoop(validInput, prompt);
   }
 
   private static boolean testDecks() {
