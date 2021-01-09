@@ -24,7 +24,7 @@ public class pokerMain {
   public static void main(String args[]) {
     // User menu prompt
     System.out.println("Are you ready to ride the bus?");
-    String prompt = "Press y to play, q to quit, and e for help.";
+    String prompt = "Press y to play, q to quit, and e for the rules.";
     ArrayList<String> validInput = new ArrayList<String>();
     validInput.add("y");
 
@@ -42,7 +42,6 @@ public class pokerMain {
    */
   public static void colorGuess() {
     boolean complete = false;
-    int cardVal;
 
     // runs the game until the user wins or quits
     while (!complete) {
@@ -61,19 +60,12 @@ public class pokerMain {
       String drawnCard = genCard();
       System.out.println("\n" + drawnCard);
 
-      // if user guesses correctly when it is red
-      if ((userIn.equals("r") && (drawnCard.contains("Hearts") || drawnCard.contains("Diamonds")))) {
+      // compares user guess to red or black suits
+      if (((userIn.equals("r") && (drawnCard.contains("Hearts") || drawnCard.contains("Diamonds"))))
+          || ((userIn.equals("b") && (drawnCard.contains("Spades") || drawnCard.contains("Clubs"))))) {
         quip(true);
         complete = highOrLow(drawnCard);
-      }
-      // if user guesses correctly when it is black
-      else if ((userIn.equals("b") && (drawnCard.contains("Spades") || drawnCard.contains("Clubs")))) {
-        quip(true);
-        // proceed to the next part of the game
-        complete = highOrLow(drawnCard);
-      }
-      // if user is incorrect
-      else {
+      } else {
         System.out.println("Incorrect, the card is " + (userIn.equals("b") ? "red" : "black") + ".");
       }
     }
@@ -105,12 +97,8 @@ public class pokerMain {
     System.out.println("\n" + nextCardString);
 
     // compare user input to card values
-
-    // FIXME: combine if and elif
-    if ((userIn.equals("h")) && (nextCardVal > prevCardVal)) {
-      quip(true);
-      return inOrOut(nextCardVal, prevCardVal);
-    } else if ((userIn.equals("l")) && (nextCardVal < prevCardVal)) {
+    if (((userIn.equals("h")) && (nextCardVal > prevCardVal))
+        || ((userIn.equals("l")) && (nextCardVal < prevCardVal))) {
       quip(true);
       return inOrOut(nextCardVal, prevCardVal);
     }
@@ -129,7 +117,6 @@ public class pokerMain {
   }
 
   /**
-   * 
    * This method is used for the third challenge of the game to see if the next
    * card is in between or outside the numeric values of the previous two
    * 
@@ -138,7 +125,7 @@ public class pokerMain {
    */
   public static boolean inOrOut(int secondCardVal, int firstCardVal) {
     checkDeck();
-    // Makes the secondCardVal always greater than cardVal for comparison
+    // Makes the secondCardVal the upper bound for comparison
     if (firstCardVal > secondCardVal) {
       int temp = secondCardVal;
       secondCardVal = firstCardVal;
@@ -159,11 +146,10 @@ public class pokerMain {
     int nextCardVal = cardVal(nextCardString);
     System.out.println("\n" + nextCardString);
 
-    // FIXME: Combine if statements
-    if (userIn.equals("i") && (nextCardVal < secondCardVal) && (nextCardVal > firstCardVal)) {
-      quip(true);
-      return suitGuess();
-    } else if (userIn.equals("o") && ((nextCardVal > secondCardVal) || (nextCardVal < firstCardVal))) {
+    // Compares user input to the next card and the bounds based off of the previous
+    // two cards
+    if ((userIn.equals("i") && (nextCardVal < secondCardVal) && (nextCardVal > firstCardVal))
+        || (userIn.equals("o") && ((nextCardVal > secondCardVal) || (nextCardVal < firstCardVal)))) {
       quip(true);
       return suitGuess();
     }
@@ -178,8 +164,8 @@ public class pokerMain {
   }
 
   /**
-   * This method is used for the last challenge of the game which is guessing the
-   * suit of a drawn card
+   * This method is the last challenge of the game: guessing the suit of a drawn
+   * card
    * 
    * @return a boolean value signaling whether or not to complete the game
    */
@@ -269,8 +255,6 @@ public class pokerMain {
     return cardName;
   }
 
-  // FIXME: Try switch statement
-
   /**
    * Helper method used to determine the numerical value of a selected card
    * 
@@ -289,7 +273,8 @@ public class pokerMain {
       return 13;
     } else if (card.contains("10")) {
       return 10;
-    } else { // otherwise takes the first character of the card (always a number)
+    } else {
+      // otherwise takes the first character of the card (always a number)
       return Character.getNumericValue((char) card.charAt(0));
     }
   }
