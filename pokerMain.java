@@ -1,6 +1,6 @@
 // Created By Mark Truttmann
 // Summer 2019
-// Edited Winter 2020
+// Edited Winter 2020/2021
 
 import java.util.Random;
 import java.util.Scanner;
@@ -43,9 +43,11 @@ public class pokerMain {
   public static void colorGuess() {
     boolean complete = false;
 
-    // runs the game until the user wins or quits
+    // runs the game until the user quits
     while (!complete) {
       checkDeck();
+
+      // set up for input loop
       String prompt = "\nRed or Black? [r/b]";
       ArrayList<String> validInput = new ArrayList<String>();
       validInput.add("r");
@@ -56,7 +58,7 @@ public class pokerMain {
         break;
       }
 
-      // gets name and numeric value of card
+      // gets name of a drawn card
       String drawnCard = genCard();
       System.out.println("\n" + drawnCard);
 
@@ -81,6 +83,8 @@ public class pokerMain {
   public static boolean highOrLow(String prevCard) {
     checkDeck();
     int prevCardVal = cardVal(prevCard);
+
+    // set up for input loop
     String prompt = "\nHigher, lower, or the Same? [h/l/s]\n-> " + prevCard;
     ArrayList<String> validInput = new ArrayList<String>();
     validInput.add("h");
@@ -131,20 +135,22 @@ public class pokerMain {
       secondCardVal = firstCardVal;
       firstCardVal = temp;
     }
+    // retrieves the next card and saves its integer value
+    String nextCardString = genCard();
+    int nextCardVal = cardVal(nextCardString);
+    System.out.println("\n" + nextCardString);
+
+    // set up for input loop
     String prompt = "\nIn or out? [i/o]\n-> " + firstCardVal + " and " + secondCardVal;
     ArrayList<String> validInput = new ArrayList<String>();
     validInput.add("i");
     validInput.add("o");
 
+    // get user input
     String userIn = inputLoop(validInput, prompt);
     if (userIn.equals("q")) {
       return true;
     }
-
-    // retrieves the next card and saves its integer value
-    String nextCardString = genCard();
-    int nextCardVal = cardVal(nextCardString);
-    System.out.println("\n" + nextCardString);
 
     // Compares user input to the next card and the bounds based off of the previous
     // two cards
