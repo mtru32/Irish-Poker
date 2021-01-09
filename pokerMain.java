@@ -8,18 +8,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 
 /**
- * HELPER METHOD
-public static String helper([‘i’, ‘o]) {
-Probably also pass response
-As second argument
-You’ll use q every time, so don’t include as an arg
-While loop
-For when userIn doesn’t match anything in array of acceptable values
-Return userIn?
-You could potentially use values in first argument array to form the println question where you give the possible responses
- */
-
-/**
  * 
  * @author Mark Truttmann
  * 
@@ -40,15 +28,8 @@ public class pokerMain {
     // loop until user enters valid input
     while (!userIn.equals("q") && !userIn.equals("y")) {
       if (userIn.charAt(0) == 'h') {
-        System.out.println("\n===========Rules===========\nThis is a guessing game"
-            + " that is played with one deck of cards and four stages. Aces are low.\n1. Guess "
-            + "the color of the card (red or black)\n2. Guess if the next card "
-            + "is higher, lower, or the same compared to the previously drawn"
-            + " card\n3. Guess if the next card is in between or"
-            + " outside the value of the two previous cards\n4. Guess the suit of a drawn"
-            + " card\nFor each stage, read the prompt and type your guess from the "
-            + "choices in the brackets []\nAnytime you are incorrect the game will "
-            + "restart back at colors.\n\nGood Luck! - Press y to play or q to quit");
+        System.out.println(
+            "\n=============== Rules ===============\nThis is a guessing game that is played with one deck of cards and four stages. Aces are low.\n1. Guess the color of the card (red or black)\n2. Guess if the next card is higher, lower, or the same compared to the previously drawn card\n3. Guess if the next card is in between or outside the value of the two previous cards\n4. Guess the suit of a drawn card\nFor each stage, read the prompt and type your guess from the choices in the brackets []\nAnytime you are incorrect the game will restart back at colors.\n\nGood Luck! - Press y to play or q to quit");
         userIn = scnr.next().trim().toLowerCase();
       } else {
         System.out.println("Press y to play, q to quit, and h for help");
@@ -73,17 +54,18 @@ public class pokerMain {
     // runs the game until the user wins or quits
     while (!complete) {
       checkDeck();
-      String userIn = "";
+      String prompt = "\nRed or Black? [r/b]";
+      ArrayList<String> validInput = new ArrayList<String>();
+      validInput.add("r");
+      validInput.add("b");
 
-      while (!userIn.equals("r") && !userIn.equals("b") && !userIn.equals("q")) {
-        System.out.println("\nRed or Black? [r/b]"); // Prompts the user
-        userIn = scnr.next().trim().toLowerCase();
-      }
+      String userIn = inputLoop(validInput, prompt);
       if (userIn.equals("q")) {
         break;
       }
 
-      String drawnCard = genCard(); // gets the name of the card
+      // gets name and numeric value of card
+      String drawnCard = genCard();
       cardVal = cardVal(drawnCard);
       System.out.println("\n" + drawnCard);
 
@@ -114,18 +96,19 @@ public class pokerMain {
    */
   public static boolean highOrLow(int prevCardVal) {
     checkDeck();
-    String userIn = "";
+    String prompt = "\nHigher, Lower, or Same? [h/l/s]";
+    ArrayList<String> validInput = new ArrayList<String>();
+    validInput.add("h");
+    validInput.add("l");
+    validInput.add("s");
 
-    while (!userIn.equals("h") && !userIn.equals("l") && !userIn.equals("s") && !userIn.equals("q")) {
-      System.out.println("\nHigher, Lower, or Same? [h/l/s]"); // user prompt
-      userIn = scnr.next().trim().toLowerCase();
-    }
+    String userIn = inputLoop(validInput, prompt);
     if (userIn.equals("q")) {
       return true;
     }
 
-    String nextCardString = genCard(); // gets the name of the card
-    int nextCardVal = cardVal(nextCardString); // gets the numeric value of the card
+    String nextCardString = genCard();
+    int nextCardVal = cardVal(nextCardString);
     System.out.println("\n" + nextCardString);
 
     // compare user input to card values
@@ -168,11 +151,12 @@ public class pokerMain {
       secondCardVal = firstCardVal;
       firstCardVal = temp;
     }
-    String userIn = "";
-    while (!userIn.equals("i") && !userIn.equals("o") && !userIn.equals("q")) {
-      System.out.println("\nIn or out? -> " + firstCardVal + " and " + secondCardVal + " [i/o]");
-      userIn = scnr.next().trim().toLowerCase();
-    }
+    String prompt = "\nIn or out? -> " + firstCardVal + " and " + secondCardVal + " [i/o]";
+    ArrayList<String> validInput = new ArrayList<String>();
+    validInput.add("i");
+    validInput.add("o");
+
+    String userIn = inputLoop(validInput, prompt);
     if (userIn.equals("q")) {
       return true;
     }
@@ -208,14 +192,15 @@ public class pokerMain {
    */
   public static boolean suitGuess() {
     checkDeck();
-    String userIn = "";
 
-    // user input loop
-    while (!userIn.equals("c") && !userIn.equals("s") && !userIn.equals("d") && !userIn.equals("h")
-        && !userIn.equals("q")) {
-      System.out.println("\nWhat Suit? [c/d/h/s] (Clubs, Diamonds, Hearts, Spades)");
-      userIn = scnr.next().trim().toLowerCase();
-    }
+    String prompt = "\nWhat Suit? [c/d/h/s] (Clubs, Diamonds, Hearts, Spades)";
+    ArrayList<String> validInput = new ArrayList<String>();
+    validInput.add("c");
+    validInput.add("d");
+    validInput.add("h");
+    validInput.add("s");
+
+    String userIn = inputLoop(validInput, prompt);
     if (userIn.equals("q")) {
       return true;
     }
@@ -259,6 +244,20 @@ public class pokerMain {
       System.out.print("Re-");
       genDeck();
     }
+  }
+
+  /**
+   * Helper method used to loop a prompt until correct input is entered
+   */
+  public static String inputLoop(ArrayList<String> validInput, String prompt) {
+    String userIn = "";
+    validInput.add("q");
+
+    while (!validInput.contains(userIn)) {
+      System.out.println(prompt);
+      userIn = scnr.next().trim().toLowerCase();
+    }
+    return userIn;
   }
 
   /**
